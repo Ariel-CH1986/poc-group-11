@@ -223,6 +223,10 @@
 
       <!-- Phase 2 成果容器 -->
       <div id="outputContainer" class="hidden space-y-4">
+      <div id="selectionConfirm" class="text-[11px] text-slate-600 bg-slate-50 border border-slate-200 rounded-lg px-3 py-2 flex items-center gap-1.5">
+        <i class="fa-solid fa-circle-check text-aqua-500"></i> <span id="selectionConfirmText"></span>
+      </div>
+
 
         <!-- 1. 📧 主旨建議 -->
         <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
@@ -355,6 +359,10 @@
       const recipient = document.querySelector('input[name="recipient"]:checked').value;
       const tone = document.querySelector('input[name="tone"]:checked').value;
       const scenario = document.querySelector('input[name="scenario"]:checked').value;
+      const scMap = {auto:"自動判斷",sample:"樣品追蹤",quote:"議價降價",quality:"品質客訴",delivery:"交期/出貨",cert:"認證索取",oem:"OEM 合約",copper:"銅價調漲",default:"一般詢問"};
+      const selText = "已選擇：收件人 " + recipient + "　｜　語氣 " + tone.replace(/\s*\(.*\)$/,"") + "　｜　情境 " + (scMap[scenario] || scenario);
+      const selEl = document.getElementById("selectionConfirmText");
+      if (selEl) selEl.textContent = selText;
 
       document.getElementById('emptyState').classList.add('hidden');
       document.getElementById('outputContainer').classList.add('hidden');
