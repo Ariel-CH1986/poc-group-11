@@ -454,6 +454,8 @@
       };
 
 
+      const toneCfg = toneSet[tone] || toneSet["[A] 標準專業禮貌"];
+
       const po = m.po ? ` (${m.po})` : "";
       const model = m.model || "[Model #]";
       const qty = m.qty || "[Quantity]";
