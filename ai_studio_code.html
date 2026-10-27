@@ -334,7 +334,7 @@
       };
 
       // ---- 情境判定 ----
-      const has = (...ks) => ks.some(k => draft.includes(k) || tone.includes(k));
+      const has = (...ks) => ks.some(k => draft.includes(k));
       let scenario = "default";
       if (has("銅價","調漲","漲價","原物料","LME","成本上揚","成本暴漲")) scenario = "copper";
       else if (has("延誤","延遲","交期","出貨","還沒收到","配送","送來","delay","shipment")) scenario = "delivery";
