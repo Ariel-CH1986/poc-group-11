@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AquaFlow BizMail | 國際水五金外貿英文書信專家</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            aqua: {
+              50: '#f0f9ff',
+              100: '#e0f2fe',
+              500: '#0ea5e9',
+              600: '#0284c7',
+              700: '#0369a1',
+              800: '#075985',
+              900: '#0c4a6e',
+            }
+          }
+        }
+      }
+    }
+  </script>
+  <style>
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif; }
+    .custom-scroll::-webkit-scrollbar { width: 6px; }
+    .custom-scroll::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+  </style>
+</head>
+<body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
+
+  <!-- 頂部導覽列 -->
+  <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-aqua-700 to-teal-600 flex items-center justify-center text-white shadow-md">
+          <i class="fa-solid fa-faucet-drip text-xl"></i>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="text-base font-bold text-slate-900">AquaFlow BizMail</h1>
+            <span class="text-[10px] bg-teal-100 text-teal-800 font-semibold px-2 py-0.5 rounded-full border border-teal-200">水五金專業版</span>
+          </div>
+          <p class="text-xs text-slate-500">衛浴五金 · 閥門配件 · 表面工藝 · 國際認證外貿書信智庫</p>
+        </div>
+      </div>
+      
+      <div class="flex items-center space-x-2">
+        <button onclick="toggleSettingsModal()" class="px-3 py-1.5 rounded-lg border border-slate-200 hover:bg-slate-50 text-slate-600 text-xs font-medium flex items-center transition">
+          <i class="fa-solid fa-sliders mr-1.5 text-slate-400"></i> AI API 設定
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- 主工作區 -->
+  <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex-1 grid grid-cols-1 lg:grid-cols-12 gap-6 w-full">
+    
+    <!-- 左側：輸入與 Phase 1 互動引導 (5 Cols) -->
+    <div class="lg:col-span-5 flex flex-col space-y-5">
+      
+      <!-- 草稿輸入卡片 -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col">
+        <div class="flex items-center justify-between mb-2.5">
+          <label class="text-xs font-bold uppercase tracking-wider text-slate-700 flex items-center">
+            <i class="fa-solid fa-pen-to-square text-aqua-600 mr-1.5"></i>輸入中文草稿或要點
+          </label>
+          <div class="flex items-center space-x-2 text-xs">
+            <span class="text-slate-400">載入產業範例:</span>
+            <button onclick="loadSample('claim')" class="text-aqua-600 hover:underline font-medium">客訴測漏回覆</button>
+            <span class="text-slate-300">|</span>
+            <button onclick="loadSample('copperHike')" class="text-aqua-600 hover:underline font-medium">銅價調漲</button>
+          </div>
+        </div>
+
+        <textarea id="rawDraft" rows="6" placeholder="請將您的中文信件草稿、規格變更、報價爭議或溝通要點貼於此處...&#10;例：客戶反映上一批面盆龍頭在安裝後有微漏水問題，我們調閱了出廠 QC 紀錄，該批出貨前都有做 100% 氣壓測漏 (0.6MPa)..." class="w-full p-3.5 text-xs sm:text-sm rounded-xl border border-slate-200 focus:ring-2 focus:ring-aqua-600 focus:border-aqua-600 outline-none transition custom-scroll resize-none bg-slate-50/50 leading-relaxed"></textarea>
+      </div>
+
+      <!-- Phase 1: 互動引導 (收件人關係與期待語氣) -->
+      <div class="bg-white p-5 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+        <div class="border-b border-slate-100 pb-2.5 flex items-center justify-between">
+          <span class="text-xs font-bold uppercase tracking-wider text-aqua-800 bg-aqua-50 px-2 py-0.5 rounded">Phase 1: 關係與語氣確認</span>
+          <span class="text-[11px] text-slate-400">水五金情境校準</span>
+        </div>
+
+        <!-- 1. 收件人關係 -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-2">
+            1. 收件人關係 (Recipient)
+          </label>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <label class="flex items-center p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer transition has-[:checked]:border-aqua-600 has-[:checked]:bg-aqua-50/40">
+              <input type="radio" name="recipient" value="[A] 國外買家/品牌客戶" class="text-aqua-600 focus:ring-aqua-600 mr-2" checked>
+              <span>[A] 國外買家 / 品牌客戶</span>
+            </label>
+            <label class="flex items-center p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer transition has-[:checked]:border-aqua-600 has-[:checked]:bg-aqua-50/40">
+              <input type="radio" name="recipient" value="[B] 零件或原料供應商" class="text-aqua-600 focus:ring-aqua-600 mr-2">
+              <span>[B] 零件 / 原料供應商</span>
+            </label>
+            <label class="flex items-center p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer transition has-[:checked]:border-aqua-600 has-[:checked]:bg-aqua-50/40">
+              <input type="radio" name="recipient" value="[C] 海外代理商/經銷商" class="text-aqua-600 focus:ring-aqua-600 mr-2">
+              <span>[C] 海外代理 / 經銷商</span>
+            </label>
+            <label class="flex items-center p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer transition has-[:checked]:border-aqua-600 has-[:checked]:bg-aqua-50/40">
+              <input type="radio" name="recipient" value="[D] 其他（請說明）" class="text-aqua-600 focus:ring-aqua-600 mr-2">
+              <span>[D] 其他特定對象</span>
+            </label>
+          </div>
+        </div>
+
+        <!-- 2. 期待語氣/情境 -->
+        <div>
+          <label class="block text-xs font-semibold text-slate-700 mb-2">
+            2. 期待語氣/情境 (Tone & Context)
+          </label>
+          <div class="grid grid-cols-2 gap-2 text-xs">
+            <label class="flex items-center p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer transition has-[:checked]:border-aqua-600 has-[:checked]:bg-aqua-50/40">
+              <input type="radio" name="tone" value="[A] 標準專業禮貌" class="text-aqua-600 focus:ring-aqua-600 mr-2" checked>
+              <span>[A] 標準專業禮貌</span>
+            </label>
+            <label class="flex items-center p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer transition has-[:checked]:border-aqua-600 has-[:checked]:bg-aqua-50/40">
+              <input type="radio" name="tone" value="[B] 堅定/強硬 (客訴/催款/原料調漲)" class="text-aqua-600 focus:ring-aqua-600 mr-2">
+              <span>[B] 堅定/強硬 (客訴/調漲)</span>
+            </label>
+            <label class="flex items-center p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer transition has-[:checked]:border-aqua-600 has-[:checked]:bg-aqua-50/40">
+              <input type="radio" name="tone" value="[C] 委婉/軟化 (交期延誤/拒絕低價/改模)" class="text-aqua-600 focus:ring-aqua-600 mr-2">
+              <span>[C] 委婉/軟化 (延誤/改模)</span>
+            </label>
+            <label class="flex items-center p-2.5 rounded-lg border border-slate-200 hover:bg-slate-50 cursor-pointer transition has-[:checked]:border-aqua-600 has-[:checked]:bg-aqua-50/40">
+              <input type="radio" name="tone" value="[D] 簡潔親切 (樣品追蹤/日常開發)" class="text-aqua-600 focus:ring-aqua-600 mr-2">
+              <span>[D] 簡潔親切 (樣品/追蹤)</span>
+            </label>
+          </div>
+        </div>
+
+        <button onclick="generatePlumbingEmail()" id="submitBtn" class="w-full bg-gradient-to-r from-aqua-700 via-teal-700 to-slate-800 text-white font-medium py-3 rounded-xl shadow-md hover:shadow-lg hover:opacity-95 transition flex items-center justify-center space-x-2 text-xs sm:text-sm">
+          <i class="fa-solid fa-file-contract"></i>
+          <span>生成水五金專業外貿英文書信</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- 右側：Phase 2 結構化輸出 (7 Cols) -->
+    <div class="lg:col-span-7 flex flex-col space-y-5">
+      
+      <!-- 初始空狀態 -->
+      <div id="emptyState" class="bg-white rounded-2xl border border-slate-200 p-12 text-center my-auto flex flex-col items-center justify-center">
+        <div class="w-16 h-16 rounded-2xl bg-aqua-50 border border-aqua-100 flex items-center justify-center text-aqua-600 mb-4 text-2xl shadow-sm">
+          <i class="fa-solid fa-screwdriver-wrench"></i>
+        </div>
+        <h3 class="text-slate-800 font-bold text-sm mb-1">等待輸入與轉換</h3>
+        <p class="text-slate-500 text-xs max-w-sm">支援衛浴龍頭、閥門、鍛造/壓鑄件、認證規範（cUPC/NSF/WRAS）與外貿合規風險校閱。</p>
+      </div>
+
+      <!-- 載入中動畫 -->
+      <div id="loadingState" class="hidden bg-white rounded-2xl border border-slate-200 p-16 text-center my-auto flex flex-col items-center justify-center">
+        <div class="inline-block animate-spin rounded-full h-9 w-9 border-4 border-aqua-600 border-t-transparent mb-3"></div>
+        <p class="text-slate-700 font-medium text-xs sm:text-sm">正在對齊水五金產業標準術語、審查規格公差與商務責任歸屬...</p>
+        <span class="text-[11px] text-slate-400 mt-1">Checking: Hydrostatic Testing, Material Specs & Trade Risks</span>
+      </div>
+
+      <!-- Phase 2 成果容器 -->
+      <div id="outputContainer" class="hidden space-y-4">
+
+        <!-- 1. 📧 主旨建議 -->
+        <div class="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+          <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-2.5 flex items-center">
+            <span class="w-2 h-2 rounded-full bg-aqua-600 mr-2"></span>1. 📧 主旨建議 (Subject Line Alternatives)
+          </h2>
+          <div id="subjectList" class="space-y-2">
+            <!-- 動態插入主旨 -->
+          </div>
+        </div>
+
+        <!-- 2. 📝 正文翻譯 -->
+        <div class="bg-white rounded-xl border border-slate-200 p-5 shadow-sm relative">
+          <div class="flex items-center justify-between mb-3 border-b border-slate-100 pb-2">
+            <h2 class="text-xs font-bold text-slate-500 uppercase tracking-wider flex items-center">
+              <span class="w-2 h-2 rounded-full bg-teal-600 mr-2"></span>2. 📝 正文翻譯 (Email Content)
+            </h2>
+            <button onclick="copyToClipboard('emailBody')" class="text-xs bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 py-1 rounded transition flex items-center font-medium">
+              <i class="fa-regular fa-copy mr-1 text-slate-500"></i> 複製全文
+            </button>
+          </div>
+          <div id="emailBody" class="text-xs sm:text-sm text-slate-800 leading-relaxed font-mono whitespace-pre-line bg-slate-50/70 p-4 rounded-lg border border-slate-100">
+            <!-- 動態插入信件正文 -->
+          </div>
+        </div>
+
+        <!-- 3. ⚠️ 商務風險與水五金敏感詞提醒 -->
+        <div class="bg-amber-50/70 rounded-xl border border-amber-200/90 p-4 shadow-sm">
+          <h2 class="text-xs font-bold text-amber-800 uppercase tracking-wider mb-2 flex items-center">
+            <i class="fa-solid fa-triangle-exclamation mr-1.5 text-amber-600"></i>3. ⚠️ 商務風險與水五金敏感詞提醒 (Business Risk & Technical Alert)
+          </h2>
+          <ul id="riskAlert" class="text-xs text-amber-900 leading-normal pl-4 list-disc space-y-1.5">
+            <!-- 動態插入水五金專屬風險 -->
+          </ul>
+        </div>
+
+        <!-- 4. 🎯 外商閱讀體感 -->
+        <div class="bg-slate-50 rounded-xl border border-slate-200 p-4 shadow-sm">
+          <h2 class="text-xs font-bold text-slate-600 uppercase tracking-wider mb-1 flex items-center">
+            <i class="fa-solid fa-eye mr-1.5 text-aqua-600"></i>4. 🎯 外商閱讀體感 (Tone Check)
+          </h2>
+          <p id="toneCheck" class="text-xs text-slate-700 leading-relaxed">
+            <!-- 動態插入體感短評 -->
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- LLM API 設定 Modal -->
+  <div id="settingsModal" class="fixed inset-0 bg-slate-900/40 backdrop-blur-sm z-50 flex items-center justify-center hidden">
+    <div class="bg-white rounded-2xl max-w-md w-full p-6 shadow-xl border border-slate-200 m-4">
+      <div class="flex items-center justify-between mb-3">
+        <h3 class="text-sm font-bold text-slate-800">API 連線設定 (OpenAI 相容)</h3>
+        <button onclick="toggleSettingsModal()" class="text-slate-400 hover:text-slate-600"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <p class="text-xs text-slate-500 mb-4">輸入您自己的 API Key（如 OpenAI、DeepSeek）以啟用即時 AI 翻譯；未填寫時將以水五金專家離線範本輸出。</p>
+      
+      <div class="space-y-3 text-xs">
+        <div>
+          <label class="block text-slate-700 font-medium mb-1">API Endpoint</label>
+          <input type="text" id="apiEndpoint" placeholder="https://api.openai.com/v1/chat/completions" class="w-full p-2.5 rounded-lg border border-slate-200 outline-none focus:border-aqua-600">
+        </div>
+        <div>
+          <label class="block text-slate-700 font-medium mb-1">API Key</label>
+          <input type="password" id="apiKey" placeholder="sk-..." class="w-full p-2.5 rounded-lg border border-slate-200 outline-none focus:border-aqua-600">
+        </div>
+        <div>
+          <label class="block text-slate-700 font-medium mb-1">Model</label>
+          <input type="text" id="apiModel" placeholder="gpt-4o / deepseek-chat" value="gpt-4o" class="w-full p-2.5 rounded-lg border border-slate-200 outline-none focus:border-aqua-600">
+        </div>
+      </div>
+
+      <div class="mt-5 flex justify-end">
+        <button onclick="toggleSettingsModal()" class="px-4 py-2 rounded-lg bg-aqua-700 text-white text-xs font-medium hover:bg-aqua-800 transition">儲存並返回</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast 訊息 -->
+  <div id="toast" class="fixed bottom-6 right-6 bg-slate-900 text-white text-xs px-4 py-2.5 rounded-lg shadow-lg opacity-0 transition duration-300 pointer-events-none z-50">
+    已成功複製到剪貼簿！
+  </div>
+
+  <script>
+    // 水五金產業典型範例草稿
+    const samples = {
+      claim: "買家工程部您好，關於您反應 PO#2024-089 的單孔面盆龍頭 (Model #BF-302) 在工地安裝後有滲漏水情況，我們非常重視。調閱工廠出廠檢驗報告 (PSI Report)，本批次 100% 通過 0.6 MPa 氣密測試與陶瓷閥芯 (Sedal ceramic cartridge) 靜態水壓測試。請協助提供現場漏水處的照片或短影片，並確認牙規是否為標準 G 1/2\" (BSPP) 以及施工止水膠帶纏繞方式。我們已備妥備品隨時配合補件。",
+      copperHike: "客戶您好，因近期倫敦金屬交易所 (LME) 銅價與黃銅錠 (CW617N / C36000) 原料成本在過去兩個月暴漲超過 14%，加上電鍍鉻層 (Chrome Plating) 與包材成本持續上揚，我們現行報價單 (Quotation #QT-2024-V2) 已無法吸收成本。自下月 1 號起，所有黃銅鍛造球閥與恆溫龍頭訂單單價將微調 6.5%。本月 25 號前確認的既有訂單仍維持原價，敬請把握提前下單以鎖定價格。"
+    };
+
+    function loadSample(type) {
+      document.getElementById('rawDraft').value = samples[type];
+      if (type === 'claim') {
+        document.querySelector('input[name="recipient"][value="[A] 國外買家/品牌客戶"]').checked = true;
+        document.querySelector('input[name="tone"][value="[A] 標準專業禮貌"]').checked = true;
+      } else {
+        document.querySelector('input[name="recipient"][value="[A] 國外買家/品牌客戶"]').checked = true;
+        document.querySelector('input[name="tone"][value="[B] 堅定/強硬 (客訴/催款/原料調漲)"]').checked = true;
+      }
+    }
+
+    function toggleSettingsModal() {
+      document.getElementById('settingsModal').classList.toggle('hidden');
+    }
+
+    function showToast(text = "已成功複製到剪貼簿！") {
+      const toast = document.getElementById('toast');
+      toast.innerText = text;
+      toast.classList.remove('opacity-0');
+      setTimeout(() => toast.classList.add('opacity-0'), 2000);
+    }
+
+    function copyToClipboard(id) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text).then(() => showToast());
+    }
+
+    async function generatePlumbingEmail() {
+      const draft = document.getElementById('rawDraft').value.trim();
+      if (!draft) {
+        alert("請先輸入中文草稿內容！");
+        return;
+      }
+
+      const recipient = document.querySelector('input[name="recipient"]:checked').value;
+      const tone = document.querySelector('input[name="tone"]:checked').value;
+
+      document.getElementById('emptyState').classList.add('hidden');
+      document.getElementById('outputContainer').classList.add('hidden');
+      document.getElementById('loadingState').classList.remove('hidden');
+
+      const apiKey = document.getElementById('apiKey').value.trim();
+
+      if (apiKey) {
+        try {
+          await callRealLLM(draft, recipient, tone);
+        } catch (err) {
+          console.error(err);
+          alert("API 連線失敗，切換回內建水五金專家模板生成。錯誤: " + err.message);
+          renderPlumbingMock(draft, recipient, tone);
+        }
+      } else {
+        setTimeout(() => {
+          renderPlumbingMock(draft, recipient, tone);
+        }, 650);
+      }
+    }
+
+    function renderPlumbingMock(draft, recipient, tone) {
+      document.getElementById('loadingState').classList.add('hidden');
+      document.getElementById('outputContainer').classList.remove('hidden');
+
+      const isCopper = draft.includes("銅價") || draft.includes("調漲") || tone.includes("調漲");
+      let subjects = [];
+      let emailBody = "";
+      let risks = [];
+      let toneCheck = "";
+
+      if (isCopper) {
+        subjects = [
+          { text: "Official Notice: Price Adjustment on Brass Valves & Faucets (Effective Dec 1st)", tag: "正式公文標題" },
+          { text: "Important Notice: Raw Material Cost Surcharge on CW617N Brass Products", tag: "原物料焦點" },
+          { text: "Update on Quotation #QT-2024-V2: Metal Market Fluctuation & Order Deadline", tag: "附帶促成下單" }
+        ];
+
+        emailBody = `Dear [Buyer Name / Purchasing Team],
+
+I hope this email finds you well.
+
+We are writing to provide a transparent update regarding the raw material market conditions. Over the past two months, the London Metal Exchange (LME) copper cash settlement and brass ingot costs (specifically CW617N / C36000) have surged by over 14%, accompanied by rising costs in surface finishing and electroplating.
+
+While we have made every effort to absorb these fluctuations through internal manufacturing efficiencies, current pricing under Quotation #QT-2024-V2 is no longer sustainable.
+
+Effective [Date], prices across our forged brass ball valve and thermostatic mixer lines will be adjusted by +6.5%. 
+
+To support your upcoming projects and inventory planning, all confirmed purchase orders received with payment deposit before [Date, e.g., Nov 25th] will be strictly honored at current pricing.
+
+Please find the revised price list attached for your review. We appreciate your long-standing partnership and understanding under these global commodity headwinds.
+
+Best regards,
+
+[Your Name]
+Export Sales Department
+[Company Name]`;
+
+        risks = [
+          "<strong>報價有效期限 (Quotation Validity)</strong>：請務必在合約/PI 加註 <code>Subject to LME copper price fluctuation</code> 或 <code>Prices valid for 14 days</code>，避免因買方延遲下單造成倒貼風險。",
+          "<strong>材質標示一致性 (Material Grade)</strong>：信中提及的 <code>CW617N</code> (歐洲標準) 與 <code>C36000</code> (北美標準) 在耐脫鋅 (DZR) 與含鉛量法規不同，發送前請核對該買家所屬國家的無鉛法規（如美國 NSF/ANSI 372 或歐洲 4MS Positive List）。",
+          "<strong>調價生效認定點</strong>：明確以「PI 簽署並收到訂金 (Deposit Received)」為準，勿僅寫「下單」，以免買方以發送 PO 郵件爭執舊價。"
+        ];
+
+        toneCheck = "語氣堅定且依據充分（引用 LME 與具體材質品號），避開了情緒性抱怨。透過預告緩衝期與截單鎖價優惠，既維護了製造端利潤，又為客戶創造了促成即時下單的正向推力。";
+
+      } else {
+        subjects = [
+          { text: "Technical Inquiry & QC Verification: Basin Mixer Leakage Issue (PO# 2024-089 / Model #BF-302)", tag: "品質工程專用" },
+          { text: "Follow-up on Quality Feedback: Model #BF-302 - 100% Air/Hydrostatic Test Record", tag: "強調出廠品管" },
+          { text: "Quality Clarification & Immediate Support: PO# 2024-089 Basin Mixers", tag: "積極排查" }
+        ];
+
+        emailBody = `Dear [Customer Engineering Team / QC Manager],
+
+Thank you for bringing your feedback regarding Model #BF-302 under PO# 2024-089 to our attention. Quality reliability is our highest priority, and we take this report very seriously.
+
+We immediately retrieved the Pre-Shipment Inspection (PSI) records for this production lot. All finished units underwent 100% pneumatic air testing (0.6 MPa) for housing integrity, as well as static hydrostatic testing on the Sedal ceramic cartridges to verify zero pressure drop prior to packaging.
+
+To help our technical team accurately identify the root cause, could you kindly assist by providing:
+1. High-resolution photos or a short video demonstrating the exact leak point (e.g., cartridge gland nut, aerator joint, or inlet flex hose connection).
+2. Confirmation of thread engagement—whether standard G 1/2" (BSPP) or NPT fittings were used on-site, along with PTFE tape application.
+
+In the meantime, we have placed backup replacement units and spare cartridges on standby. We are committed to resolving this promptly and will provide our preliminary 8D corrective action report once the visual evidence is received.
+
+Best regards,
+
+[Your Name]
+Quality Assurance & Export Division
+[Company Name]`;
+
+        risks = [
+          "<strong>測漏承諾字眼 (Zero Leakage)</strong>：切忌使用 <code>guarantee 100% zero leakage in the field</code>（承諾案場零漏水），因案場管網水錘 (Water Hammer)、過高水壓 (超過 10 Bar) 或施工水電手路皆可能損壞閥芯。改用 <code>100% factory pressure tested before packing</code> 符合國際製造慣例與責任劃分。",
+          "<strong>牙規與公差爭議 (G / NPT)</strong>：外銷英美最常見漏水爭議在於平行管螺紋 (G / BSPP) 需要墊圈或 O-ring 密封，而錐管螺紋 (NPT) 則仰賴螺紋錐度自密。信中主動提出排查，能及早釐清非製造缺陷之施工責任。",
+          "<strong>未經判定前勿承認責任 (Liability)</strong>：避免使用 <code>Our defective products</code>，請使用 <code>reported issue</code> 或 <code>onsite leakage feedback</code>，待 8D 調查釐清後再做保固責任裁定。"
+        ];
+
+        toneCheck = "此信件展現了外銷大廠在品質爭議上的冷靜與專業風範。不僅未推諉責任，還以客觀出廠檢驗數據（PSI、氣密壓數、閥芯品牌）建立專業信任感，同時引導買家提供客觀技術佐證，防守嚴謹。";
+      }
+
+      renderComponents(subjects, emailBody, risks, toneCheck);
+    }
+
+    function renderComponents(subjects, emailBody, risks, toneCheck) {
+      // 1. 主旨
+      const subjectList = document.getElementById('subjectList');
+      subjectList.innerHTML = subjects.map(s => `
+        <div class="flex items-center justify-between p-2.5 rounded-lg border border-slate-100 bg-slate-50 hover:bg-white transition group">
+          <div class="flex items-center space-x-2 overflow-hidden">
+            <span class="text-[10px] font-semibold px-2 py-0.5 rounded bg-aqua-100 text-aqua-800 whitespace-nowrap">${s.tag}</span>
+            <span class="text-xs text-slate-800 truncate font-mono">${s.text}</span>
+          </div>
+          <button onclick="navigator.clipboard.writeText('${s.text}'); showToast();" class="text-slate-400 group-hover:text-aqua-600 text-xs px-2 py-1"><i class="fa-regular fa-copy"></i></button>
+        </div>
+      `).join('');
+
+      // 2. 正文
+      document.getElementById('emailBody').innerText = emailBody;
+
+      // 3. 商務與水五金技術風險
+      const riskAlert = document.getElementById('riskAlert');
+      riskAlert.innerHTML = risks.map(r => `<li>${r}</li>`).join('');
+
+      // 4. 外商體感
+      document.getElementById('toneCheck').innerText = toneCheck;
+    }
+
+    // 若填寫了 API Key 呼叫真實 LLM
+    async function callRealLLM(draft, recipient, tone) {
+      const endpoint = document.getElementById('apiEndpoint').value.trim() || 'https://api.openai.com/v1/chat/completions';
+      const apiKey = document.getElementById('apiKey').value.trim();
+      const model = document.getElementById('apiModel').value.trim() || 'gpt-4o';
+
+      const systemPrompt = `你是一位精通國際水五金（Plumbing & Sanitary Hardware）產業溝通、跨文化轉譯與商務風險控管的英文書信專家。
+熟悉衛浴龍頭、閥門 (Ball/Gate/Check Valves)、陶瓷閥芯 (Sedal/Kerox)、軟管、牙規 (NPT/G/BSPT)、材質 (CW617N/C36000/Lead-Free/SUS304)、表面處理 (PVD/Chrome Plating) 與認證 (cUPC/NSF 61/NSF 372/WRAS/CE)。
+
+請根據使用者輸入的中文內容，執行 Phase 2 結構化輸出。
+請輸出嚴格的 JSON 格式（不要使用任何額外文字或 markdown 標籤）：
+{
+  "subjects": [{"text": "英文主旨", "tag": "情境標籤"}],
+  "emailBody": "包含稱呼、文化轉譯與水五金標準術語正文、結尾敬語",
+  "riskAlerts": ["水五金敏感詞與技術/商務責任風險提醒1", "提醒2", "提醒3"],
+  "toneCheck": "1-2句話評析國外買家閱讀體感"
+}`;
+
+      const userPrompt = `【水五金中文草稿】：${draft}\n【收件人關係】：${recipient}\n【期待語氣/情境】：${tone}`;
+
+      const res = await fetch(endpoint, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${apiKey}`
+        },
+        body: JSON.stringify({
+          model: model,
+          messages: [
+            { role: 'system', content: systemPrompt },
+            { role: 'user', content: userPrompt }
+          ],
+          temperature: 0.25
+        })
+      });
+
+      if (!res.ok) throw new Error(`HTTP ${res.status}: ${res.statusText}`);
+      const data = await res.json();
+      const rawContent = data.choices[0].message.content.trim();
+      const cleanJson = rawContent.replace(/^```json/, '').replace(/```$/, '').trim();
+      const result = JSON.parse(cleanJson);
+
+      document.getElementById('loadingState').classList.add('hidden');
+      document.getElementById('outputContainer').classList.remove('hidden');
+
+      renderComponents(result.subjects, result.emailBody, result.riskAlerts, result.toneCheck);
+    }
+  </script>
+</body>
+</html>
