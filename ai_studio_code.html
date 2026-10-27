@@ -561,6 +561,26 @@ Export Sales Department
         toneCheck = "親切、以客戶為中心，明確引導後續資訊收集。";
       }
 
+      // ---- 依「收件人關係」與「期待語氣」調整信件內容 ----
+      const recv = {
+        "[A] 國外買家/品牌客戶": { g: "Dear [Buyer Name / Purchasing Team],", d: "Export Sales Department" },
+        "[B] 零件或原料供應商": { g: "Dear [Supplier Procurement Team],", d: "Supply Chain & Export Division" },
+        "[C] 海外代理商/經銷商": { g: "Dear [Agent / Distributor],", d: "Channel Sales & Export Division" },
+        "[D] 其他（請說明）": { g: "Dear [Contact Person],", d: "Export Department" }
+      };
+      const tne = {
+        "[A] 標準專業禮貌": " We appreciate your continued cooperation.",
+        "[B] 堅定/強硬 (客訴/催款/原料調漲)": " Please confirm your decision by [Date] so we may proceed without delay.",
+        "[C] 委婉/軟化 (交期延誤/拒絕低價/改模)": " We sincerely appreciate your understanding and patience.",
+        "[D] 簡潔親切 (樣品追蹤/日常開發)": " Thanks! Feel free to reach out anytime."
+      };
+      const rv = recv[recipient] || recv["[A] 國外買家/品牌客戶"];
+      const sal = rv.g, dept = rv.d, toneNote = (tne[tone] || "");
+
+      emailBody = emailBody.replace(/Dear \[[^\]]*\]/g, sal);
+      emailBody = emailBody.replace(/(\[Your Name\]\n)[^\n]+(\n\[Company Name\])/, "$1" + dept + "$2");
+      emailBody = emailBody.replace("Best regards,", toneNote + "\n\nBest regards,");
+
       renderComponents(subjects, emailBody, risks, toneCheck);
     }
 
