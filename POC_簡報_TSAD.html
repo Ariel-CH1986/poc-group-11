@@ -11,8 +11,8 @@
     --paper:#f5f5f5; --paper2:#ececec; --ink:#2d3142; --muted:#4f5d75;
     --accent:#bf4520; --accent-tint:rgba(191,69,32,.08);
     --link:#2e5aa8; --rule:rgba(45,49,66,.12);
-    --sans:'Geist','Noto Sans TC',system-ui,sans-serif;
-    --serif:'Instrument Serif','Noto Serif TC',serif;
+    --sans:'Geist','Noto Sans TC','Microsoft JhengHei','PingFang TC',system-ui,sans-serif;
+    --serif:'Instrument Serif','Noto Serif TC','Georgia','Times New Roman',serif;
     --mono:'Geist Mono',ui-monospace,monospace;
   }
   html,body{height:100%;}
@@ -32,8 +32,8 @@
   .brand .s{ font-family:var(--mono); font-size:10px; color:var(--muted); }
 
   .kicker{ font-family:var(--mono); font-size:11px; letter-spacing:.22em; text-transform:uppercase; color:var(--muted); margin-bottom:18px; }
-  h1.title{ font-family:var(--serif); font-weight:500; font-size:56px; letter-spacing:-.02em; line-height:1.06; }
-  h2.title{ font-family:var(--serif); font-weight:500; font-size:44px; letter-spacing:-.02em; line-height:1.12; margin-bottom:24px; }
+  h1.title{ font-family:var(--sans); font-weight:700; font-size:54px; letter-spacing:-.01em; line-height:1.08; }
+  h2.title{ font-family:var(--sans); font-weight:700; font-size:42px; letter-spacing:-.01em; line-height:1.12; margin-bottom:24px; }
   .lead{ font-size:19px; color:var(--muted); max-width:820px; line-height:1.6; }
   .accent-text{ color:var(--accent); }
 
@@ -50,7 +50,7 @@
   /* Stat band */
   .stats{ display:flex; gap:12px; flex-wrap:wrap; }
   .stat{ background:var(--accent-tint); border:1px solid rgba(191,69,32,.25); border-radius:8px; padding:12px 18px; }
-  .stat b{ display:block; font-size:24px; font-family:var(--serif); color:var(--accent); }
+  .stat b{ display:block; font-size:24px; font-family:var(--sans); font-weight:700; color:var(--accent); }
   .stat span{ font-size:12px; color:var(--ink); }
 
   /* Flow embedding wrapper */
@@ -242,9 +242,18 @@
         <div class="bar">📄 Phase 2 · 結構化輸出</div>
         <div class="body">
           <div style="font-size:12px;font-weight:600;color:var(--accent);margin-bottom:8px;">① 主旨建議</div>
-          <div style="background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:10px;font-size:12.5px;font-family:var(--mono);margin-bottom:12px;">Technical Inquiry & QC Verification: Basin Mixer Leakage…</div>
-          <div style="font-size:12px;font-weight:600;color:var(--accent);margin-bottom:8px;">③ 商務風險提醒</div>
-          <div style="background:rgba(191,69,32,.06);border:1px solid rgba(191,69,32,.25);border-radius:8px;padding:10px;font-size:12.5px;">避免承諾 guarantee 100% zero leakage，改用 100% factory pressure tested before packing。</div>
+          <div style="background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:10px;font-size:12px;font-family:var(--mono);margin-bottom:10px;">
+            Technical Inquiry &amp; QC Verification: Basin Mixer Leakage Issue<br>(PO# 2024-089 · Model BF-302)
+          </div>
+          <div style="font-size:12px;font-weight:600;color:var(--accent);margin-bottom:8px;">② 正文摘要</div>
+          <div style="background:var(--paper);border:1px solid var(--rule);border-radius:8px;padding:10px;font-size:12px;line-height:1.6;color:var(--ink);">
+            Dear Customer Engineering Team,<br>
+            All finished units underwent 100% pneumatic air testing (0.6 MPa) and static hydrostatic testing on Sedal ceramic cartridges prior to packaging…
+          </div>
+          <div style="font-size:12px;font-weight:600;color:var(--accent);margin:10px 0 8px;">③ 商務風險提醒</div>
+          <div style="background:rgba(191,69,32,.06);border:1px solid rgba(191,69,32,.25);border-radius:8px;padding:10px;font-size:12px;line-height:1.6;">
+            避免承諾 guarantee 100% zero leakage，改用 100% factory pressure tested before packing。
+          </div>
         </div>
       </div>
     </div>
@@ -364,7 +373,7 @@
       <div class="card"><div class="num">3</div><h4>多語言擴充</h4><p>支援更多語系與市場合規知識庫。</p></div>
     </div>
     <div style="margin-top:44px; text-align:center;">
-      <div style="font-family:var(--serif); font-size:30px; color:var(--accent);">TSAD · 感謝聆聽</div>
+      <div style="font-family:var(--sans); font-weight:700; font-size:30px; color:var(--accent);">TSAD · 感謝聆聽</div>
       <div style="margin-top:10px; font-family:var(--mono); font-size:13px; color:var(--muted);">github.com/Ariel-CH1986/poc-group-11</div>
     </div>
   </section>

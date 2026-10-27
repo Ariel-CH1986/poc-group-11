@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<title>TSAD POC Cover</title>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;700&family=Geist+Mono:wght@400;500&family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  :root{
+    --paper:#f5f5f5; --ink:#2d3142; --muted:#4f5d75;
+    --accent:#bf4520; --accent-tint:rgba(191,69,32,.08);
+    --teal:#0d9488; --aqua:#0c4a6e;
+    --sans:'Geist','Noto Sans TC','Microsoft JhengHei',sans-serif;
+    --mono:'Geist Mono',ui-monospace,monospace;
+  }
+  body{ width:1600px; height:900px; background:var(--paper); color:var(--ink); font-family:var(--sans); position:relative; overflow:hidden; }
+
+  /* decorative top band */
+  .band{ position:absolute; top:0; left:0; width:100%; height:14px; background:linear-gradient(90deg, var(--aqua), var(--teal) 55%, var(--accent)); }
+
+  .content{ position:absolute; inset:0; padding:88px 96px; display:flex; flex-direction:column; }
+
+  .brand{ display:flex; align-items:center; gap:16px; }
+  .brand .mark{ width:52px; height:52px; border-radius:16px; background:linear-gradient(135deg,var(--aqua),var(--teal)); color:#fff; display:flex; align-items:center; justify-content:center; font-size:26px; }
+  .brand .t{ font-size:22px; font-weight:700; letter-spacing:.04em; }
+  .brand .s{ font-family:var(--mono); font-size:14px; color:var(--muted); letter-spacing:.14em; text-transform:uppercase; margin-top:2px; }
+
+  .kicker{ margin-top:120px; font-family:var(--mono); font-size:15px; letter-spacing:.28em; text-transform:uppercase; color:var(--accent); }
+  h1{ margin-top:22px; font-size:74px; font-weight:700; line-height:1.12; letter-spacing:-.01em; }
+  h1 .sub{ color:var(--teal); }
+  .lead{ margin-top:34px; font-size:26px; color:var(--muted); max-width:1180px; line-height:1.5; }
+
+  .tags{ margin-top:56px; display:flex; gap:14px; flex-wrap:wrap; }
+  .tag{ padding:12px 24px; border-radius:999px; background:#fff; border:1px solid var(--rule, rgba(45,49,66,.12)); font-size:18px; font-weight:500; }
+  .tag.accent{ background:var(--accent-tint); color:var(--accent); border-color:rgba(191,69,32,.3); }
+
+  .footer{ margin-top:auto; display:flex; justify-content:space-between; align-items:flex-end; }
+  .footer .repo{ font-family:var(--mono); font-size:16px; color:var(--muted); }
+  .footer .team{ text-align:right; }
+  .footer .team .n{ font-size:30px; font-weight:700; }
+  .footer .team .d{ font-family:var(--mono); font-size:14px; color:var(--muted); letter-spacing:.1em; text-transform:uppercase; margin-top:4px; }
+</style>
+</head>
+<body>
+  <div class="band"></div>
+  <div class="content">
+    <div class="brand">
+      <div class="mark">💧</div>
+      <div>
+        <div class="t">TSAD</div>
+        <div class="s">POC Group-11</div>
+      </div>
+    </div>
+
+    <div class="kicker">POC · Group 11 · 2026</div>
+    <h1>水五金外貿英文書信<br><span class="sub">智慧工作流</span></h1>
+    <p class="lead">TSAD 團隊打造的 AquaFlow BizMail 與案件自動分類工具，<br>將繁雜的水五金外貿溝通，轉化為精準、得體、低風險的英文書信。</p>
+
+    <div class="tags">
+      <span class="tag accent">AquaFlow BizMail</span>
+      <span class="tag">案件自動分類</span>
+      <span class="tag">laya-burger</span>
+      <span class="tag">POC</span>
+    </div>
+
+    <div class="footer">
+      <div class="repo">github.com/Ariel-CH1986/poc-group-11</div>
+      <div class="team">
+        <div class="n">TSAD</div>
+        <div class="d">AquaFlow BizMail</div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
