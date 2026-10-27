@@ -1,6 +1,14 @@
 # poc-group-11
 
-水五金外貿英文書信工具與相關資源。。
+水五金外貿英文書信工具與相關資源。
+
+## 🚀 線上使用連結（GitHub Pages）
+
+| 內容 | 網址 |
+| --- | --- |
+| 簡報（首頁，自動跳轉） | https://ariel-ch1986.github.io/poc-group-11/ |
+| **AquaFlow BizMail 小工具** | https://ariel-ch1986.github.io/poc-group-11/ai_studio_code.html |
+| 系統流程圖 | https://ariel-ch1986.github.io/poc-group-11/ai_studio_flowchart.html |
 
 ## 內容
 
