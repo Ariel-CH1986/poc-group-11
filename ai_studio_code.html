@@ -87,6 +87,11 @@
         <div class="border-b border-slate-100 pb-2.5 flex items-center justify-between">
           <span class="text-xs font-bold uppercase tracking-wider text-aqua-800 bg-aqua-50 px-2 py-0.5 rounded">Phase 1: 關係與語氣確認</span>
           <span class="text-[11px] text-slate-400">水五金情境校準</span>
+<div id="detectedScenario" class="mt-2 hidden">
+  <span class="inline-flex items-center gap-1.5 text-[11px] font-medium bg-aqua-50 text-aqua-800 border border-aqua-200 rounded-full px-2.5 py-1">
+    <i class="fa-solid fa-tags"></i> 偵測到情境：<b id="scenarioName"></b>
+  </span>
+ div>
 <div class="mt-2 flex items-center gap-1.5 text-[11px] text-slate-500">
   <i class="fa-solid fa-wand-magic-sparkles text-aqua-500"></i>
   <span>情境將依草稿內容自動判斷（樣品／議價／客訴／認證…），語氣由你選擇。</span>
@@ -411,6 +416,11 @@
 
       // ---- 主旨（依情境） ----
       let subjects = [];
+const scenarioLabel = {
+  copper: "銅價調漲", delivery: "交期/出貨", quote: "議價降價", quality: "品質客訴",
+  cert: "認證索取", sample: "樣品追蹤", oem: "OEM 合約", default: "一般詢問"
+};
+
       switch (scenario) {
         case "copper": subjects = [
           { text: "Official Notice: Price Adjustment on Brass Valves & Faucets (Effective [Date])", tag: "正式公文標題" },
@@ -483,6 +493,10 @@
       else if (tone.includes("軟化")) toneCheck = "語氣委婉、展現誠意與同理心，適合道歉、緩解不滿或拒絕場景。";
       else if (tone.includes("親切")) toneCheck = "語氣簡潔親切，符合日常樣品追蹤與開發信氛圍。";
       else toneCheck = "語氣專業禮貌、四平八穩，適合正式商務往來。";
+
+      // 顯示偵測情境於輸入區
+      const sd = document.getElementById("detectedScenario");
+      if (sd) { document.getElementById("scenarioName").textContent = (scenarioLabel[scenario] || "一般詢問"); sd.classList.remove("hidden"); }
 
       renderComponents(subjects, emailBody, risks, toneCheck);
     }
