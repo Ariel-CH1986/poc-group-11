@@ -34,6 +34,7 @@
   </style>
 </head>
 <body class="bg-slate-100 text-slate-800 min-h-screen flex flex-col">
+  <script src="https://cdn.jsdelivr.net/npm/marked@9/marked.min.js"></script>
 
   <!-- 頂部導覽列 -->
   <header class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
@@ -619,7 +620,8 @@ const scenarioLabel = {
       `).join('');
 
       // 2. 正文
-      document.getElementById('emailBody').innerText = emailBody;
+      const mdText = (window.marked && window.marked.parse) ? window.marked.parse(emailBody) : emailBody.replace(/\n/g, "<br>");
+      document.getElementById('emailBody').innerHTML = mdText;
 
       // 3. 商務與水五金技術風險
       const riskAlert = document.getElementById('riskAlert');
@@ -672,7 +674,7 @@ const scenarioLabel = {
 熟悉衛浴龍頭、閥門 (Ball/Gate/Check Valves)、陶瓷閥芯 (Sedal/Kerox)、軟管、牙規 (NPT/G/BSPT)、材質 (CW617N/C36000/Lead-Free/SUS304)、表面處理 (PVD/Chrome Plating) 與認證 (cUPC/NSF 61/NSF 372/WRAS/CE)。
 
 請根據使用者輸入的中文內容，執行 Phase 2 結構化輸出。
-請輸出嚴格的 JSON 格式（不要使用任何額外文字或 markdown 標籤）：
+請輸出嚴格的 JSON 格式（除 emailBody 內部可使用 Markdown 排版（粗體、清單）外，不要任何額外文字或標籤）：
 {
   "subjects": [{"text": "英文主旨", "tag": "情境標籤"}],
   "emailBody": "包含稱呼、文化轉譯與水五金標準術語正文、結尾敬語",
