@@ -324,7 +324,7 @@
       document.getElementById('loadingState').classList.add('hidden');
       document.getElementById('outputContainer').classList.remove('hidden');
 
-      // ---- 擷取使用者草稿中的關鍵細節，讓範本貼近輸入 ----
+      // ---- 擷取使用者草稿中的關鍵細節 ----
       const m = {
         po:    (draft.match(/PO\s*(#)?\s*[A-Za-z0-9-_]+/i) || [])[0] || "",
         model: (draft.match(/[A-Z]{1,4}\d{2,}[A-Z0-9]*|[A-Z]{1,3}[-–]\d{2,4}/i) || [])[0] || "",
@@ -333,10 +333,9 @@
         date:  (draft.match(/(?:[一二三四五六七八九十\d]{1,3}\s*(?:月|號|日)|[A-Z][a-z]{2}\s*\d{1,2})/) || [])[0] || ""
       };
 
-      // ---- 情境判定：依關鍵字分派對應範本 ----
+      // ---- 情境判定 ----
       const has = (...ks) => ks.some(k => draft.includes(k) || tone.includes(k));
       let scenario = "default";
-
       if (has("銅價","調漲","漲價","原物料","LME","成本上揚","成本暴漲")) scenario = "copper";
       else if (has("延誤","延遲","交期","出貨","還沒收到","配送","送來","delay","shipment")) scenario = "delivery";
       else if (has("降價","議價","報價","折扣","便宜","比價","太貴","price")) scenario = "quote";
@@ -345,241 +344,130 @@
       else if (has("樣品","樣本","展示機","sample")) scenario = "sample";
       else if (has("OEM","合約","不良率","貼牌","品牌","contract")) scenario = "oem";
 
-      let subjects = [], emailBody = "", risks = [], toneCheck = "";
-
-      const po = m.po ? ` (${m.po})` : "";
-      const model = m.model || "[Model #]";
-      const qty = m.qty || "[Quantity]";
-      const pct = m.pct;
-
-      if (scenario === "copper") {
-        subjects = [
-          { text: "Official Notice: Price Adjustment on Brass Valves & Faucets (Effective [Date])", tag: "正式公文標題" },
-          { text: "Important Notice: Raw Material Cost Surcharge on CW617N Brass Products", tag: "原物料焦點" },
-          { text: "Update on Quotation: Metal Market Fluctuation & Order Deadline", tag: "促成下單" }
-        ];
-        emailBody = `Dear [Buyer Name / Purchasing Team],
-
-I hope this email finds you well.
-
-We are writing to provide a transparent update regarding raw material market conditions. Over the past two months, the London Metal Exchange (LME) copper cash settlement and brass ingot costs (specifically CW617N / C36000) have surged by over ${pct} in percentage terms, accompanied by rising costs in surface finishing and electroplating.
-
-While we have made every effort to absorb these fluctuations through internal manufacturing efficiencies, current pricing is no longer sustainable.
-
-Effective [Date], prices across our forged brass ball valve and thermostatic mixer lines will be adjusted by +${pct}.
-
-To support your upcoming projects and inventory planning, all confirmed purchase orders received with payment deposit before [Date] will be strictly honored at current pricing.
-
-Please find the revised price list attached for your review. We appreciate your long-standing partnership and understanding under these global commodity headwinds.
-
-Best regards,
-
-[Your Name]
-Export Sales Department
-[Company Name]`;
-        risks = [
-          "<strong>報價有效期限 (Quotation Validity)</strong>：請務必在合約/PI 加註 <code>Subject to LME copper price fluctuation</code> 或 <code>Prices valid for 14 days</code>，避免因買方延遲下單造成倒貼風險。",
-          "<strong>材質標示一致性 (Material Grade)</strong>：信中提及的 <code>CW617N</code> 與 <code>C36000</code> 在耐脫鋅 (DZR) 與含鉛量法規不同，發送前請核對買家所在國的無鉛法規。",
-          "<strong>調價生效認定點</strong>：明確以「PI 簽署並收到訂金 (Deposit Received)」為準，勿僅寫「下單」。"
-        ];
-        toneCheck = "語氣堅定且依據充分（引用 LME 與具體材質品號），藉預告緩衝期與截單鎖價優惠，既維護利潤又促成下單。";
-      }
-      else if (scenario === "delivery") {
-        subjects = [
-          { text: `Update on Delivery Schedule${po}`, tag: "交期更新" },
-          { text: "Shipping Delay & Revised ETA: Our Commitment to You", tag: "主動說明" }
-        ];
-        emailBody = `Dear [Customer],
-
-Thank you for your patience regarding the delivery of ${model}${po}.
-
-We would like to update you on the shipment status. Due to [reason: e.g. production scheduling / raw material lead time / logistics], the dispatch will be slightly delayed. A revised estimated time of arrival (ETA) is [Date].
-
-We understand the impact this may have on your projects, and we have prioritized your order to minimize any inconvenience. We will keep you informed as the shipment progresses.
-
-We sincerely apologize for the delay and appreciate your understanding.
-
-Best regards,
-
-[Your Name]
-Export Sales Department
-[Company Name]`;
-        risks = [
-          "<strong>交期承諾</strong>：請提供具體、可達成的 revised ETA，避免再次延誤造成商譽損失。",
-          "<strong>緩衝機制</strong>：建議說明造成延誤之客觀原因，並提供替代方案（如部分出貨、空運選項）。"
-        ];
-        toneCheck = "語氣委婉、主動、具建設性，能有效緩解客戶對延誤的不滿。";
-      }
-      else if (scenario === "quote") {
-        subjects = [
-          { text: `Quotation Review: ${model}${po}`, tag: "報價討論" },
-          { text: "Competitive Pricing Proposal & Value Add", tag: "雙贏提案" }
-        ];
-        emailBody = `Dear [Customer],
-
-Thank you for your interest in ${model} and for sharing your feedback regarding pricing.
-
-We understand that pricing is an important factor in your decision. We would like to share the value proposition behind our quotation: [quality certifications / material grade CW617N / surface finishing PVD / after-sales support].
-
-That said, we are open to discussing options that can better fit your budget—for example, [adjusted order quantity / simplified packaging / alternative finishing].
-
-Please let us know if you would like to explore any of these options. We value our partnership and are committed to reaching a mutually beneficial agreement.
-
-Best regards,
-
-[Your Name]
-Export Sales Department
-[Company Name]`;
-        risks = [
-          "<strong>避免立即降價承諾</strong>：先說明價值與差異化，再提出可討論的彈性空間。",
-          "<strong>訂單量關聯</strong>：如願降價，建議與訂單量 (MOQ) 或付款條件掛鉤。"
-        ];
-        toneCheck = "專業、有彈性，既不貶低自身報價，又展現合作誠意。";
-      }
-      else if (scenario === "quality") {
-        subjects = [
-          { text: `Technical Inquiry & QC Verification: ${model}${po}`, tag: "品質工程專用" },
-          { text: `Follow-up on Quality Feedback: ${model} - Test Record`, tag: "強調出廠品管" }
-        ];
-        emailBody = `Dear [Customer Engineering Team / QC Manager],
-
-Thank you for bringing your feedback regarding ${model}${po} to our attention. Quality reliability is our highest priority, and we take this report very seriously.
-
-We immediately retrieved the Pre-Shipment Inspection (PSI) records for this production lot. All finished units underwent 100% pneumatic air testing (0.6 MPa) for housing integrity, as well as static hydrostatic testing on the ceramic cartridges to verify zero pressure drop prior to packaging.
-
-To help our technical team accurately identify the root cause, could you kindly assist by providing:
-1. High-resolution photos or a short video demonstrating the exact issue point.
-2. Confirmation of the onsite installation conditions (pressure, thread type, sealing method).
-
-In the meantime, we have placed replacement units and spare parts on standby. We are committed to resolving this promptly and will provide our preliminary 8D corrective action report once the evidence is received.
-
-Best regards,
-
-[Your Name]
-Quality Assurance & Export Division
-[Company Name]`;
-        risks = [
-          "<strong>測漏承諾字眼 (Zero Leakage)</strong>：切忌承諾 <code>guarantee 100% zero leakage in the field</code>，改用 <code>100% factory pressure tested before packing</code>。",
-          "<strong>未經判定前勿承認責任 (Liability)</strong>：避免使用 <code>Our defective products</code>，常使用 <code>reported issue</code>。"
-        ];
-        toneCheck = "冷靜、專業，以客觀出廠檢驗數據建立信任，引導買家提供佐證，防守嚴謹。";
-      }
-      else if (scenario === "cert") {
-        subjects = [
-          { text: `Certification Documents Request: ${model}`, tag: "認證文件" },
-          { text: "Attached: NSF/ANSI & WRAS Compliance Documentation", tag: "合規文件" }
-        ];
-        emailBody = `Dear [Customer],
-
-Thank you for your inquiry regarding the compliance and certification documentation for ${model}.
-
-We are pleased to provide the relevant certificates, including [NSF/ANSI 61 & 372 / UPC / cUPC / CE / WRAS] as applicable. Please find them attached to this email.
-
-Should you require additional documentation or further details on material compliance (e.g., lead-free requirements under NSF/ANSI 372), please do not hesitate to let us know.
-
-Best regards,
-
-[Your Name]
-Quality Assurance & Export Division
-[Company Name]`;
-        risks = [
-          "<strong>認證範圍確認</strong>：請確認該買家市場所需的具體認證（如美國須 NSF/ANSI，英國須 WRAS），避免給錯文件。"
-        ];
-        toneCheck = "清晰、配合度高，能快速建立合規信任。";
-      }
-      else if (scenario === "sample") {
-        subjects = [
-          { text: `Sample Shipment Follow-up: ${model}`, tag: "樣品追蹤" },
-          { text: "Sample Testing Status & Next Steps", tag: "進度詢問" }
-        ];
-        emailBody = `Dear [Customer],
-
-I hope you have received the sample of ${model} that we shipped on [Date].
-
-We would appreciate any initial feedback from your testing, as it helps us provide the best support. If everything looks good, we would be glad to assist with the next steps, including [bulk order scheduling / customization / specification confirmation].
-
-Please feel free to reach out with any questions.
-
-Best regards,
-
-[Your Name]
-Export Sales Department
-[Company Name]`;
-        risks = [
-          "<strong>設定回饋時限</strong>：可溫和提及「若 X 日內無回覆，我們將主動跟進」。"
-        ];
-        toneCheck = "簡潔親切，符合樣品追蹤的日常開發氛圍。";
-      }
-      else if (scenario === "oem") {
-        subjects = [
-          { text: `OEM Collaboration Proposal: ${model}`, tag: "OEM 合作" },
-          { text: "Contract & Quality Assurance Discussion", tag: "合約討論" }
-        ];
-        emailBody = `Dear [Customer],
-
-Thank you for considering our OEM collaboration for ${model}.
-
-We are happy to discuss the specifics, including branding, packaging, specification adjustments, and quality assurance terms. On quality, we maintain a consistent [defect rate] and are transparent about our process—let's define the acceptance criteria together to align expectations.
-
-We look forward to working with you on a mutually beneficial agreement. Please share your requirements and we will prepare a proposal accordingly.
-
-Best regards,
-
-[Your Name]
-Export Sales Department
-[Company Name]`;
-        risks = [
-          "<strong>不良率條款</strong>：討論合約前，建議先確認統計抽樣基準與責任歸屬，避免模糊條款。",
-          "<strong>授權聲明</strong>：若涉及品牌貼牌，請確認品牌授權與品質責任歸屬。"
-        ];
-        toneCheck = "專業且開放，明確帶入品質與合約討論，建立長期合作信任。";
-      }
-      else { // default：至少把擷取到的資訊放進信裡，產生關聯
-        subjects = [
-          { text: `Inquiry Regarding ${model}${po}`, tag: "一般詢問" },
-          { text: "Your Message & Our Product Support", tag: "回覆" }
-        ];
-        emailBody = `Dear [Customer],
-
-Thank you for your message${po ? ` regarding ${po}` : ""}${model ? ` and ${model}` : ""}.
-
-We have carefully noted your inquiry${qty ? ` regarding ${qty}` : ""} and would like to assist you. To provide you with the most accurate information, could you please confirm the following:
-1. The specific product model and specifications you are interested in.
-2. The required quantity and delivery timeline.
-3. Any certification or compliance requirements.
-
-Once we receive these details, we will prepare a tailored response and quotation for you.
-
-Best regards,
-
-[Your Name]
-Export Sales Department
-[Company Name]`;
-        risks = [
-          "<strong>索取必要資訊</strong>：在資訊不足時，主動提問規格、數量與認證需求，避免猜測與誤解。"
-        ];
-        toneCheck = "親切、以客戶為中心，明確引導後續資訊收集。";
-      }
-
-      // ---- 依「收件人關係」與「期待語氣」調整信件內容 ----
+      // ---- 收件人關係：稱呼 + 部門 ----
       const recv = {
         "[A] 國外買家/品牌客戶": { g: "Dear [Buyer Name / Purchasing Team],", d: "Export Sales Department" },
         "[B] 零件或原料供應商": { g: "Dear [Supplier Procurement Team],", d: "Supply Chain & Export Division" },
         "[C] 海外代理商/經銷商": { g: "Dear [Agent / Distributor],", d: "Channel Sales & Export Division" },
         "[D] 其他（請說明）": { g: "Dear [Contact Person],", d: "Export Department" }
       };
-      const tne = {
-        "[A] 標準專業禮貌": " We appreciate your continued cooperation.",
-        "[B] 堅定/強硬 (客訴/催款/原料調漲)": " Please confirm your decision by [Date] so we may proceed without delay.",
-        "[C] 委婉/軟化 (交期延誤/拒絕低價/改模)": " We sincerely appreciate your understanding and patience.",
-        "[D] 簡潔親切 (樣品追蹤/日常開發)": " Thanks! Feel free to reach out anytime."
-      };
       const rv = recv[recipient] || recv["[A] 國外買家/品牌客戶"];
-      const sal = rv.g, dept = rv.d, toneNote = (tne[tone] || "");
+      const sal = rv.g, dept = rv.d;
 
-      emailBody = emailBody.replace(/Dear \[[^\]]*\]/g, sal);
-      emailBody = emailBody.replace(/(\[Your Name\]\n)[^\n]+(\n\[Company Name\])/, "$1" + dept + "$2");
-      emailBody = emailBody.replace("Best regards,", toneNote + "\n\nBest regards,");
+      // ---- 語氣：開場 / 中段態度句 / 收尾，正文措辭隨語氣不同 ----
+      const toneSet = {
+        "[A] 標準專業禮貌": {
+          open: "I hope this email finds you well.",
+          mid:  "We are committed to handling this with the utmost professionalism and will keep you informed at every step.",
+          close: "We appreciate your continued cooperation and look forward to progressing together."
+        },
+        "[B] 堅定/強硬 (客訴/催款/原料調漲)": {
+          open: "We are writing in reference to the matter below and expect prompt attention.",
+          mid:  "Please treat the following as our firm position; we require confirmation by [Date] to proceed.",
+          close: "We trust this is clear and look forward to your timely response."
+        },
+        "[C] 委婉/軟化 (交期延誤/拒絕低價/改模)": {
+          open: "Thank you for your message. We would like to address this carefully and with the utmost consideration.",
+          mid:  "We sincerely understand the impact this may have and will do our best to accommodate your needs.",
+          close: "We truly appreciate your patience and understanding during this time, and apologize for any inconvenience."
+        },
+        "[D] 簡潔親切 (樣品追蹤/日常開發)": {
+          open: "Hi there — a quick note about your latest inquiry.",
+          mid:  "We're on it and will get back to you shortly with an update.",
+          close: "Thanks again, and feel free to reach out anytime!"
+        }
+      };
+      const toneCfg = toneSet[tone] || toneSet["[A] 標準專業禮貌"];
+
+      const po = m.po ? ` (${m.po})` : "";
+      const model = m.model || "[Model #]";
+      const qty = m.qty || "[Quantity]";
+      const pct = m.pct;
+
+      // ---- 各情境的事實核心（中性） ----
+      const core = {
+        copper: `We are writing to provide a transparent update regarding raw material market conditions. Over the past two months, the London Metal Exchange (LME) copper cash settlement and brass ingot costs (specifically CW617N / C36000) have surged by over ${pct} in percentage terms, accompanied by rising costs in surface finishing and electroplating. While we have absorbed these fluctuations through internal efficiencies, current pricing is no longer sustainable. Effective [Date], prices across our forged brass ball valve and thermostatic mixer lines will be adjusted by +${pct}. To support your upcoming projects, all confirmed orders with deposit before [Date] will be honored at current pricing. Please find the revised price list attached.`,
+        delivery: `We would like to update you on the shipment status of ${model}${po}. Due to [reason: production scheduling / raw material lead time / logistics], the dispatch will be slightly delayed. A revised estimated time of arrival (ETA) is [Date]. We have prioritized your order to minimize any inconvenience and will keep you informed as the shipment progresses.`,
+        quote: `Thank you for your interest in ${model} and for sharing your feedback regarding pricing. We understand pricing is an important factor in your decision. We would like to share the value behind our quotation: [quality certifications / material grade CW617N / surface finishing PVD / after-sales support]. We are open to discussing options to better fit your budget—for example, [adjusted order quantity / simplified packaging / alternative finishing].`,
+        quality: `Thank you for bringing your feedback regarding ${model}${po} to our attention. Quality reliability is our highest priority, and we take this report very seriously. We immediately retrieved the Pre-Shipment Inspection (PSI) records for this production lot; all finished units underwent 100% pneumatic air testing (0.6 MPa) and static hydrostatic testing on the ceramic cartridges prior to packaging. To help us identify the root cause, could you kindly provide: 1) high-resolution photos or a short video of the exact issue point, and 2) confirmation of onsite installation conditions (pressure, thread type, sealing method). In the meantime, we have placed replacement units and spare parts on standby.`,
+        cert: `Thank you for your inquiry regarding the compliance and certification documentation for ${model}. We are pleased to provide the relevant certificates, including [NSF/ANSI 61 & 372 / UPC / cUPC / CE / WRAS] as applicable. Please find them attached. Should you require additional documentation or details on material compliance (e.g., lead-free requirements under NSF/ANSI 372), please let us know.`,
+        sample: `I hope you have received the sample of ${model} that we shipped on [Date]. We would appreciate any initial feedback from your testing, as it helps us provide the best support. If everything looks good, we would be glad to assist with the next steps, including [bulk order scheduling / customization / specification confirmation].`,
+        oem: `Thank you for considering our OEM collaboration for ${model}. We are happy to discuss branding, packaging, specification adjustments, and quality assurance terms. On quality, we maintain a consistent [defect rate] and are transparent about our process—let's define the acceptance criteria together to align expectations. Please share your requirements and we will prepare a proposal accordingly.`,
+        default: `Thank you for your message${po ? ` regarding ${po}` : ""}${model ? ` and ${model}` : ""}. We have carefully noted your inquiry${qty ? ` regarding ${qty}` : ""} and would like to assist you. To provide you with the most accurate information, could you please confirm: 1) the specific product model and specifications, 2) the required quantity and delivery timeline, and 3) any certification or compliance requirements. Once we receive these details, we will prepare a tailored response and quotation.`
+      };
+
+      // ---- 主旨（依情境） ----
+      let subjects = [];
+      switch (scenario) {
+        case "copper": subjects = [
+          { text: "Official Notice: Price Adjustment on Brass Valves & Faucets (Effective [Date])", tag: "正式公文標題" },
+          { text: "Important Notice: Raw Material Cost Surcharge on CW617N Brass Products", tag: "原物料焦點" },
+          { text: "Update on Quotation: Metal Market Fluctuation & Order Deadline", tag: "促成下單" } ]; break;
+        case "delivery": subjects = [
+          { text: `Update on Delivery Schedule${po}`, tag: "交期更新" },
+          { text: "Shipping Delay & Revised ETA: Our Commitment to You", tag: "主動說明" } ]; break;
+        case "quote": subjects = [
+          { text: `Quotation Review: ${model}${po}`, tag: "報價討論" },
+          { text: "Competitive Pricing Proposal & Value Add", tag: "雙贏提案" } ]; break;
+        case "quality": subjects = [
+          { text: `Technical Inquiry & QC Verification: ${model}${po}`, tag: "品質工程專用" },
+          { text: `Follow-up on Quality Feedback: ${model} - Test Record`, tag: "強調出廠品管" } ]; break;
+        case "cert": subjects = [
+          { text: `Certification Documents Request: ${model}`, tag: "認證文件" },
+          { text: "Attached: NSF/ANSI & WRAS Compliance Documentation", tag: "合規文件" } ]; break;
+        case "sample": subjects = [
+          { text: `Sample Shipment Follow-up: ${model}`, tag: "樣品追蹤" },
+          { text: "Sample Testing Status & Next Steps", tag: "進度詢問" } ]; break;
+        case "oem": subjects = [
+          { text: `OEM Collaboration Proposal: ${model}`, tag: "OEM 合作" },
+          { text: "Contract & Quality Assurance Discussion", tag: "合約討論" } ]; break;
+        default: subjects = [
+          { text: `Inquiry Regarding ${model}${po}`, tag: "一般詢問" },
+          { text: "Your Message & Our Product Support", tag: "回覆" } ];
+      }
+
+      // ---- 組裝正文：稱呼 + 開場(語氣) + 情境核心 + 態度句(語氣) + 收尾(語氣) ----
+      const emailBody =
+        sal + "\n\n" +
+        toneCfg.open + "\n\n" +
+        core[scenario] + "\n\n" +
+        toneCfg.mid + "\n\n" +
+        toneCfg.close + "\n\n" +
+        "Best regards,\n\n[Your Name]\n" + dept + "\n[Company Name]";
+
+      // ---- 風險提醒（依情境） ----
+      let risks = [];
+      switch (scenario) {
+        case "copper": risks = [
+          "<strong>報價有效期限 (Quotation Validity)</strong>：請務必在合約/PI 加註 <code>Subject to LME copper price fluctuation</code> 或 <code>Prices valid for 14 days</code>，避免因買方延遲下單造成倒貼風險。",
+          "<strong>材質標示一致性 (Material Grade)</strong>：<code>CW617N</code> 與 <code>C36000</code> 在耐脫鋅 (DZR) 與含鉛量法規不同，發送前請核對買家所在國的無鉛法規。",
+          "<strong>調價生效認定點</strong>：明確以「PI 簽署並收到訂金 (Deposit Received)」為準。" ]; break;
+        case "delivery": risks = [
+          "<strong>交期承諾</strong>：請提供具體、可達成的 revised ETA，避免再次延誤造成商譽損失。",
+          "<strong>緩衝機制</strong>：說明延誤之客觀原因，並提供替代方案（部分出貨、空運選項）。" ]; break;
+        case "quote": risks = [
+          "<strong>避免立即降價承諾</strong>：先說明價值與差異化，再提出可討論的彈性空間。",
+          "<strong>訂單量關聯</strong>：如願降價，建議與訂單量 (MOQ) 或付款條件掛鉤。" ]; break;
+        case "quality": risks = [
+          "<strong>測漏承諾字眼 (Zero Leakage)</strong>：切忌承諾 <code>guarantee 100% zero leakage in the field</code>，改用 <code>100% factory pressure tested before packing</code>。",
+          "<strong>未經判定前勿承認責任 (Liability)</strong>：避免使用 <code>Our defective products</code>，改用 <code>reported issue</code>。" ]; break;
+        case "cert": risks = [
+          "<strong>認證範圍確認</strong>：確認買家市場所需的具體認證（如美國須 NSF/ANSI，英國須 WRAS），避免給錯文件。" ]; break;
+        case "sample": risks = [
+          "<strong>設定回饋時限</strong>：可溫和提及「若 X 日內無回覆，我們將主動跟進」。" ]; break;
+        case "oem": risks = [
+          "<strong>不良率條款</strong>：討論合約前，先確認統計抽樣基準與責任歸屬，避免模糊條款。",
+          "<strong>授權聲明</strong>：若涉及品牌貼牌，確認品牌授權與品質責任歸屬。" ]; break;
+        default: risks = [
+          "<strong>索取必要資訊</strong>：資訊不足時，主動提問規格、數量與認證需求，避免猜測與誤解。" ];
+      }
+
+      // ---- 閱讀體感（依語氣） ----
+      let toneCheck = "";
+      if (tone.includes("強硬")) toneCheck = "語氣堅定、立場清楚，適合金額/責任/時限爭議場景；明確要求對方限期回覆。";
+      else if (tone.includes("軟化")) toneCheck = "語氣委婉、展現誠意與同理心，適合道歉、緩解不滿或拒絕場景。";
+      else if (tone.includes("親切")) toneCheck = "語氣簡潔親切，符合日常樣品追蹤與開發信氛圍。";
+      else toneCheck = "語氣專業禮貌、四平八穩，適合正式商務往來。";
 
       renderComponents(subjects, emailBody, risks, toneCheck);
     }
