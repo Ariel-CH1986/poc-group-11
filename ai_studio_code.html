@@ -355,29 +355,37 @@
       const sal = rv.g, dept = rv.d;
 
       // ---- 語氣：開場 / 中段態度句 / 收尾，正文措辭隨語氣不同 ----
-      const toneSet = {
+            const toneSet = {
         "[A] 標準專業禮貌": {
-          open: "I hope this email finds you well.",
-          mid:  "We are committed to handling this with the utmost professionalism and will keep you informed at every step.",
-          close: "We appreciate your continued cooperation and look forward to progressing together."
+          open: "I hope this email finds you well. Thank you for reaching out to us.",
+          react: "We have carefully reviewed your message and understand the situation. Please rest assured that we treat every inquiry with full attention and professionalism.",
+          ask: "To move forward efficiently, could you kindly provide a few clarifying details? We would appreciate your confirmation so we can proceed without misunderstanding.",
+          commit: "We are committed to resolving this properly and will keep you informed of progress at every stage.",
+          close: "Thank you for your trust and cooperation. We look forward to being of service."
         },
         "[B] 堅定/強硬 (客訴/催款/原料調漲)": {
-          open: "We are writing in reference to the matter below and expect prompt attention.",
-          mid:  "Please treat the following as our firm position; we require confirmation by [Date] to proceed.",
-          close: "We trust this is clear and look forward to your timely response."
+          open: "We are writing in response to your recent message. This matter requires our prompt and decisive attention.",
+          react: "We have assessed the situation and our position is clear. We expect that the terms outlined below are honored accordingly.",
+          ask: "Please confirm your agreement by [Date]. Failure to respond by then will be treated as acceptance of the stated terms.",
+          commit: "We will act on this basis promptly and hold both parties to the agreed commitments.",
+          close: "We trust this settles the matter and require your timely written confirmation."
         },
         "[C] 委婉/軟化 (交期延誤/拒絕低價/改模)": {
-          open: "Thank you for your message. We would like to address this carefully and with the utmost consideration.",
-          mid:  "We sincerely understand the impact this may have and will do our best to accommodate your needs.",
-          close: "We truly appreciate your patience and understanding during this time, and apologize for any inconvenience."
+          open: "Thank you for your message, and please accept our sincere apologies for any inconvenience.",
+          react: "We fully understand the impact this may have had on you, and this was never our intention. We would like to find the most considerate way forward for all involved.",
+          ask: "If it is convenient, we would be grateful if you could share more details so we can address this gently and thoroughly.",
+          commit: "We are committed to making this right and will handle your case with care and patience.",
+          close: "We truly appreciate your understanding and patience while we work through this."
         },
         "[D] 簡潔親切 (樣品追蹤/日常開發)": {
-          open: "Hi there — a quick note about your latest inquiry.",
-          mid:  "We're on it and will get back to you shortly with an update.",
-          close: "Thanks again, and feel free to reach out anytime!"
+          open: "Hi there — thanks for getting in touch!",
+          react: "We've looked into your note and we're on it. Simple and straightforward—here's where things stand.",
+          ask: "Could you shoot over a couple of quick details? That'll let us get you a clear answer fast.",
+          commit: "We'll get back to you shortly with an update.",
+          close: "Thanks again — feel free to reach out anytime!"
         }
       };
-      const toneCfg = toneSet[tone] || toneSet["[A] 標準專業禮貌"];
+
 
       const po = m.po ? ` (${m.po})` : "";
       const model = m.model || "[Model #]";
@@ -427,15 +435,17 @@
       }
 
       // ---- 組裝正文：稱呼 + 開場(語氣) + 情境核心 + 態度句(語氣) + 收尾(語氣) ----
-      const emailBody =
+            const emailBody =
         sal + "\n\n" +
         toneCfg.open + "\n\n" +
         core[scenario] + "\n\n" +
-        toneCfg.mid + "\n\n" +
+        toneCfg.react + "\n\n" +
+        toneCfg.ask + "\n\n" +
+        toneCfg.commit + "\n\n" +
         toneCfg.close + "\n\n" +
         "Best regards,\n\n[Your Name]\n" + dept + "\n[Company Name]";
 
-      // ---- 風險提醒（依情境） ----
+// ---- 風險提醒（依情境） ----
       let risks = [];
       switch (scenario) {
         case "copper": risks = [
